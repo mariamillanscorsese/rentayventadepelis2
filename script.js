@@ -19,30 +19,34 @@ document.querySelectorAll(".add-to-cart").forEach(button => {
     button.addEventListener("click", (e) => {
         const name = e.target.dataset.name;
         const price = parseFloat(e.target.dataset.price.replace('.', ''));
-        agregarAlCarrito(name, price);
+        const imagen = e.target.dataset.imagen; 
+
+        
+        agregarAlCarrito(name, price, imagen);
     });
 });
 
 
-function agregarAlCarrito(name, price) {
+
+function agregarAlCarrito(name, price, imagen) {
     const existeProducto = carrito.find(producto => producto.name === name);
     if (existeProducto) {
         existeProducto.cantidad += 1;
     } else {
-        carrito.push({ name, price, cantidad: 1 });
+        carrito.push({ name, price, cantidad: 1, imagen });  
     }
     actualizarCarrito();
 }
 
 
+
 function actualizarCarrito() {
-   
-    listaCarrito.innerHTML = '';
-    
+    listaCarrito.innerHTML = '';  
+
     carrito.forEach(producto => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td><img src="${producto.imagen}"  width="50"></td>
+            <td><img src="${producto.imagen}" width="50" alt="${producto.name}"></td>  
             <td>${producto.name}</td>
             <td>$${producto.price.toLocaleString()}</td>
             <td>${producto.cantidad}</td>
@@ -53,7 +57,7 @@ function actualizarCarrito() {
         listaCarrito.appendChild(row);
     });
 
-  
+   
     document.querySelectorAll(".remove-item").forEach(button => {
         button.addEventListener("click", (e) => {
             const name = e.target.dataset.name;
@@ -61,6 +65,7 @@ function actualizarCarrito() {
         });
     });
 }
+
 
 
 function eliminarProducto(name) {
